@@ -1,13 +1,4 @@
 #!/bin/bash
 
-# Check if exactly 1 argument is passed (the server IP or hostname)
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 102.217.67.132"
-    exit 1
-fi
+ssh -i ~/.ssh/school ubuntu@13.221.241.21
 
-# Server IP or hostname from argument
-SERVER="$1"
-
-# SSH into the server
-ssh -i ~/.ssh/school -o StrictHostKeyChecking=no ubuntu@"$SERVER"
