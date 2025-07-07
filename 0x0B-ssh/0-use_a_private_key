@@ -1,5 +1,13 @@
 #!/bin/bash
-# Connect to a server using SSH private key ~/.ssh/school and user ubuntu
 
-ssh -i ~/.ssh/school ubuntu@34.238.242.118
+# Check if exactly 1 argument is passed (the server IP or hostname)
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 102.217.67.132"
+    exit 1
+fi
 
+# Server IP or hostname from argument
+SERVER="$1"
+
+# SSH into the server
+ssh -i ~/.ssh/school -o StrictHostKeyChecking=no ubuntu@"$SERVER"
