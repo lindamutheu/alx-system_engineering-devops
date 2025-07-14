@@ -1,4 +1,3 @@
-#!/bin/bash
 #!/usr/bin/env bash
 
 # Function to check a subdomain
@@ -6,8 +5,8 @@ check_subdomain() {
     local DOMAIN=$1
     local SUB=$2
 
-    # Run dig and extract data
-    RECORD=$(dig ${SUB}.${DOMAIN} +short | head -n1)
+    # Run dig and extract first A record
+    RECORD=$(dig +short ${SUB}.${DOMAIN} | head -n1)
 
     if [ -z "$RECORD" ]; then
         echo "The subdomain ${SUB} does not exist or has no A record."
@@ -26,13 +25,12 @@ if [ -z "$DOMAIN" ]; then
     exit 1
 fi
 
-if [ -z "$SUBDOMAIN" ]; then
-    # No subdomain provided → check all 4
-    for sub in www lb-01 web-01 web-02
-    do
-        check_subdomain $DOMAIN $sub
-    done
+if [ -n "$SUBDOMAIN" ]; then
+    # If both domain and subdomain provided
+    check_subdomain "$DOMAIN" "$SUBDOMAIN"
 else
-    # Specific subdomain provided
-    check_subdomain $DOMAIN $SUBDOMAIN
+    # If only domain provided, check all 4 subdomains
+    for sub in www lb-01 web-01 web-02; do
+        check_subdomain "$DOMAIN" "$sub"
+    done
 fi
